@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Пример обработки событий мыши</title>
+    <style>
+        .rect {
+            background-color: green;
+            width: 100px;
+            height: 100px;
+            color: white;
+            position: absolute;
+        }
+
+        .rect2 {
+            background-color: rgb(24, 0, 240);
+            width: 100px;
+            height: 100px;
+            color: white;
+            position: absolute;
+        }
+
+        #border1 {
+            border: 1px solid black;
+            width: 600px;
+            height: 50vw;
+        }
+
+        #border2 {
+            border: 1px solid black;
+            width: 600px;
+            height: 50vw;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="border1">
+        <div id="testDiv" class="rect"></div>
+    </div>
+
+    <div id="border2">
+        <div id="testDiv2" class="rect2"></div>
+    </div>
+    <script>
+        let div = document.querySelector("#testDiv");
+        let div2 = document.querySelector("#testDiv2");
+        let move = false;
+        let move2 = false;
+        let offsetX, offsetY;
+
+        // при нажатии на div запоминаем отступ от курсора до левого верхнего угла div
+        div.addEventListener("mousedown", function (e) {
+            move = true;
+            offsetX = e.offsetX;
+            offsetY = e.offsetY;
+        });
+        div2.addEventListener("mousedown", function (e) {
+            move2 = true;
+            offsetX = e.offsetX;
+            offsetY = e.offsetY;
+        });
+
+        // отлеживаем движение мыши по поверхности документа и перемещаем div
+        // с учетом сохраненных отступов в момент нажатия левой клавиши мыши.
+        // div перемещается только если переменная move == true
+        let border1 = document.getElementById("border1");
+        let border2 = document.getElementById("border2");
+
+        document.addEventListener("mousemove", function (e) {
+            if (move) {
+                if (e.clientY - offsetY > 0 && e.clientY - offsetY < '230') {
+                    div.style.top = e.clientY - offsetY + "px";
+                }
+                if (e.clientX - offsetX > 0 && e.clientX - offsetX < '510') {
+                    div.style.left = e.clientX - offsetX + "px";
+                }
+            }
+        });
+
+        document.addEventListener("mousemove", function (e) {
+            if (move2) {
+                if (e.clientY - offsetY > '370' && e.clientY - offsetY < '530') {
+                    div2.style.top = e.clientY - offsetY + "px";
+                }
+                if (e.clientX - offsetX > 0 && e.clientX - offsetX < '510') {
+                    div2.style.left = e.clientX - offsetX + "px";
+                }
+            }
+        });
+
+        // в момент, когда клавиша отпускается прекращаем перемещение div
+        document.addEventListener("mouseup", function (e) {
+            move = false;
+            move2 = false;
+        });
+    </script>
+</body>
+
+</html>
